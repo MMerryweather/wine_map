@@ -1,0 +1,15 @@
+﻿code,description
+aet ,Actual Evapotranspiration
+def ,Climate Water Deficit
+pet ,Potential evapotranspiration
+ppt ,Precipitation
+q ,Runoff
+soil ,Soil Moisture
+srad ,Downward surface shortwave radiation
+swe ,Snow water equivalent - at end of month
+tmax ,Max Temperature
+tmin ,Min Temperature
+vap ,Vapor pressure
+ws ,Wind speed
+vpd ,Vapor Pressure Deficit
+PDSI ,Palmer Drought Severity Index
