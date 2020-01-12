@@ -1,3 +1,5 @@
+require(pacman)
+require(glue)
 pacman::p_load(tidyverse, curl)
 codes = read_csv("input/00 terraclimate codes/codes.csv", col_types = c("cc"))
 year = 2018
