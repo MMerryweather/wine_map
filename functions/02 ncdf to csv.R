@@ -28,6 +28,8 @@ per_file = function(file){
   per_month = function(selected_month, df, year){
     message(glue::glue("        {year} - {selected_month}"))
 
+    # extract a month, pivot to long
+    # Trying by month to fit all in mem
     df_monthly = df[, , selected_month] %>%
       as.data.frame(row.names = row.names(.)) %>%
       mutate(lon = row.names(.),
@@ -41,17 +43,19 @@ per_file = function(file){
       mutate_at(vars(month:value), as.numeric) %>%
       filter(between(lat, -44, -10) & between(lon, 112, 154))
 
+    # Convert to Data Table in memory so that we can use rbindlist to join quickly
     data.table::setDT(df_monthly)
     gc()
     df_monthly
-    }
+  }
 
   tidy_data = seq_len(dim(df)[3]) %>%
     map(per_month, df = df, year = year) %>%
     rbindlist() %>%
     arrange(month, lat, lon)
+
   fwrite(tidy_data, glue::glue("input/02 aus csv/{year}_{attr_names}_aus.csv"))
   message(glue::glue("    finished {str_pad(attr_names, 4, side = 'right')} - {year}"))
-
 }
+
 files %>% walk(per_file)
