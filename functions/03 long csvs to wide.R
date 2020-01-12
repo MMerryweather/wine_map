@@ -1,4 +1,4 @@
-pacman::p_load(tidyverse, ncdf4, data.table)
+pacman::p_load(tidyverse, data.table)
 # TODO
 # think about multiple years?
 
@@ -30,3 +30,20 @@ df_attributes = files %>% map_dfc(extract_attribute)
 
 df = df_common %>% bind_cols(df_attributes)
 df %>% fwrite("input/03 wide csv/wide.csv")
+
+attributes = df %>% select(-c(year:lat)) %>% colnames()
+
+## Check Health of Attributes via plot
+return_column_plot = function(col, df){
+  png(glue::glue('plot/attributes/{col}.png'), width = 1920, height = 1080)
+  col_enq = enquo(col)
+  df %>%
+    dplyr::select(lon, lat,!!col_enq) %>%
+    raster::rasterFromXYZ() %>%
+    plot(main = col)
+  dev.off()
+}
+
+library(raster)
+attributes %>% walk(return_column_plot, df = df %>% filter(year == max(year)))
+
