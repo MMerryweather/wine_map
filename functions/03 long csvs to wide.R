@@ -35,15 +35,47 @@ attributes = df %>% select(-c(year:lat)) %>% colnames()
 
 ## Check Health of Attributes via plot
 return_column_plot = function(col, df){
-  png(glue::glue('plot/attributes/{col}.png'), width = 1920, height = 1080)
-  col_enq = enquo(col)
+  # https://edwinth.github.io/blog/dplyr-recipes/
+  col_enq = rlang::sym(col)
+
+  title = fread("input/00 terraclimate codes/codes.csv") %>%
+    filter(str_trim(code) == col) %>% pluck("description")
+
   df %>%
-    dplyr::select(lon, lat,!!col_enq) %>%
-    raster::rasterFromXYZ() %>%
-    plot(main = col)
-  dev.off()
+    dplyr::transmute(lon, lat, value = !!col_enq) %>%
+    na.omit() %>%
+    ggplot(aes(x = lon,
+               y = lat,
+               fill = value)) +
+    geom_raster() +
+    scale_fill_viridis_c() +
+    coord_equal() +
+    labs(title = title) +
+    hrbrthemes::theme_ipsum_rc() +
+    theme(
+      panel.background = element_rect(fill = "black"),
+      plot.background = element_rect(fill = "black"),
+      legend.background = element_rect(fill = "black"),
+      text = element_text(colour = "white"),
+      axis.text = element_text(colour = "white"),
+      panel.grid.major.x = element_line(colour = rgb(40, 40, 40, maxColorValue = 255)),
+      panel.grid.major.y = element_line(colour = rgb(40, 40, 40, maxColorValue = 255))
+    ) +
+    ggthemr::no_minor_gridlines()
+
+  ggsave(
+    glue::glue("plot/attributes/{col}.png"),
+    width = 5,
+    height = 5,
+    units = "cm",
+    dpi = 320,
+    scale = 3
+  )
 }
 
-library(raster)
-attributes %>% walk(return_column_plot, df = df %>% filter(year == max(year)))
+attributes %>% walk(return_column_plot, df = df %>%
+                      filter(year == max(year)) %>%
+                      mutate_at(vars(aet:ws), as.numeric))
+
+
 
