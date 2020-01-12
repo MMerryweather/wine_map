@@ -4,3 +4,4 @@
 .Ruserdata
 .nc
 *.nc
+/input/02 aus csv/*

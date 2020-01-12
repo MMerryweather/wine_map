@@ -49,7 +49,7 @@ per_file = function(file){
   tidy_data = seq_len(dim(df)[3]) %>%
     map(per_month, df = df, year = year) %>%
     rbindlist() %>%
-    arrange(month, lat, lon, month)
+    arrange(month, lat, lon)
   fwrite(tidy_data, glue::glue("input/02 aus csv/{year}_{attr_names}_aus.csv"))
   message(glue::glue("    finished {str_pad(attr_names, 4, side = 'right')} - {year}"))
 
