@@ -5,3 +5,4 @@
 .nc
 *.nc
 /input/02 aus csv/*
+input/03 wide csv/wide.csv
