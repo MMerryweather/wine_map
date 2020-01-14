@@ -4,14 +4,9 @@
 .Ruserdata
 .nc
 *.nc
-/input/02 aus csv/*
+input/02 aus csv/*
 input/03 wide csv/wide.csv
-/input/04 geological/classification/shapefiles/*
-/input/04 geological/features/*/*.csv
-
+input/04 geological/classification/shapefiles/*
+input/04 geological/features/*/*.csv
 input/04 geological/df_all_geo.csv
-input/04 geological/features/YNGAGE_URI.csv
-input/04 geological/features/REPLITH_UR.csv
-input/04 geological/features/REPAGE_URI.csv
-input/04 geological/features/LITHOLOGY.csv
-input/04 geological/features/DESCR.csv
+input/04 geological/features/*.csv
