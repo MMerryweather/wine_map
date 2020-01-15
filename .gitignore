@@ -11,3 +11,6 @@ input/04 geological/features/*/*.csv
 input/04 geological/df_all_geo.csv
 input/04 geological/features/*.csv
 input/05 solar/Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF.zip
+input/05 solar/Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF/*
+input/05 solar/scaled/*
+input/05 solar/df_solar.csv
