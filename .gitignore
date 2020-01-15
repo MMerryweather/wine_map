@@ -10,3 +10,4 @@ input/04 geological/classification/shapefiles/*
 input/04 geological/features/*/*.csv
 input/04 geological/df_all_geo.csv
 input/04 geological/features/*.csv
+input/05 solar/Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF.zip
