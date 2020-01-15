@@ -93,4 +93,49 @@ df_points = list(
 df = df_points %>% bind_cols(df_annual, df_monthly)
 df %>% data.table::fwrite(glue("{root}/df_solar.csv"))
 
+plotter = function(fill, ...){
+  fill_enq = enquo(fill)
+p = df %>%
+  na.omit() %>%
+  ggplot(aes(x = lon,
+             y = lat,
+             fill = !!fill_enq)) +
+  geom_raster() +
+  scale_fill_viridis_c() +
+  coord_equal() +
+  labs(...) +
+  hrbrthemes::theme_ipsum_rc() +
+  theme(
+    panel.background = element_rect(fill = "black"),
+    plot.background = element_rect(fill = "black"),
+    legend.background = element_rect(fill = "black"),
+    legend.box = "vertical",
+    text = element_text(colour = "white"),
+    axis.text = element_text(colour = "white"),
+    panel.grid.major.x = element_line(colour = rgb(40, 40, 40, maxColorValue = 255)),
+    panel.grid.major.y = element_line(colour = rgb(40, 40, 40, maxColorValue = 255))
+  ) +
+  ggthemr::no_minor_gridlines() +
+  ggthemr::no_legend_title()
 
+
+ggsave(plot = p,
+       filename = glue::glue("plot/solar/{quo_name(fill_enq)}.png"),
+       width = 5,
+       height = 5,
+       units = "cm",
+       dpi = 320,
+       scale = 3,
+       limitsize = F
+)}
+plotter(dif,
+        title = "Diffuse Horizontal Irradiation",
+        subtitle = expression( frac(kWh, m^2 )),
+        caption = "Source: https://globalsolaratlas.info/download/australia"
+        )
+
+plotter(dni,
+        title = "Direct Normal Irradiation",
+        subtitle = expression( frac(kWh, m^2 )),
+        caption = "Source: https://globalsolaratlas.info/download/australia"
+)
