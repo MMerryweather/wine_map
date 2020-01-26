@@ -2,13 +2,12 @@ pacman::p_load(tidyverse, curl, sf, glue)
 
 #https://globalsolaratlas.info/download/australia
 root = "input/05 solar"
-file_name = annual_input = glue("Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF")
+file_name = "Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF"
 
-zip_url = "https://api.globalsolaratlas.info/download/Australia/Australia_GISdata_LTAym_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF.zip"
+zip_url = glue("https://api.globalsolaratlas.info/download/Australia/{file_name}.zip")
 zip_path = glue("{root}/{file_name}.zip")
 
 curl_download(zip_url, zip_path)
-
 zip::unzip(zip_path, exdir = glue("{root}"))
 
 folder_of_tifs_to_df = function(input_folder, output_folder){
@@ -25,10 +24,18 @@ if(!dir.exists(output_folder)){
   dir.create(output_folder, showWarnings = F, recursive = T)
 }
 
+expand_names = c("PVOUT" = "photovoltaic_power_potential",
+                 "GHI" = "global_horizontal_irradiation",
+                 "DIF" = "diffuse_horizontal_irradiation",
+                 "GTI" = "global_irradiation_for_optimally_tilted_surface",
+                 "DNI" = "direct_normal_irradiation",
+                 "OPTA" = "optimum_tilt_to_maximize_yearly_yield")
+
 dest_files = input_folder %>%
   list.files(pattern = "tif$") %>%
   sort() %>%
-  str_c(output_folder,"/",.)
+  str_c(output_folder,"/",.) %>%
+  str_replace_all(expand_names)
 
 res = 360 / 8640
 
