@@ -28,3 +28,5 @@ input/05 solar/df_solar.csv
 *.zip
 *.qpj
 *.hd5
+input/07 soil type/features/*
+*.qgz
