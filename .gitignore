@@ -30,3 +30,5 @@ input/05 solar/df_solar.csv
 *.hd5
 input/07 soil type/features/*
 *.qgz
+input/09 climate grids/grids/*
+input/08 wine maps/varietals/*
