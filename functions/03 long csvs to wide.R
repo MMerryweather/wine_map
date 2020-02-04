@@ -7,18 +7,39 @@ files = "input/02 aus csv" %>%
   here::here()
 
 extract_common = function(){
-  "input/02 aus csv" %>%
+ df_common = "input/02 aus csv" %>%
     list.files(full.names = T, pattern = ".csv") %>%
     here::here() %>%
     magrittr::extract2(1) %>%
     fread() %>%
-    select(year, month, lon, lat)
+    select(lon, lat) %>%
+   unique()
+
+ err = min(df_common$lon) - 112
+
+ df_common %>%
+   mutate(lat = lat - err,
+          lon = lon - err) %>%
+   arrange(desc(lat), lon) %>%
+   filter(between(lon, 112, 154) & between(lat, -44, -10))
 }
 
 extract_attribute = function(file){
   all_data = file %>% fread()
   attribute = all_data$attribute[[1]]
-  df = all_data %>% transmute(!! attribute := value)
+
+  err = min(all_data$lon) - 112
+
+  df = all_data %>%
+    mutate(lat = lat - err,
+           lon = lon - err) %>%
+    transmute(lat, lon, month, !! attribute := value) %>%
+    pivot_wider(names_from = month,
+                names_prefix = attribute,
+                values_from = !! attribute) %>%
+    arrange(desc(lat), lon) %>%
+    filter(between(lon, 112, 154) & between(lat, -44, -10)) %>%
+    select(-lat, -lon)
 
   rm(all_data)
   gc()
