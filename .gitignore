@@ -14,3 +14,17 @@ input/05 solar/Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GE
 input/05 solar/Australia_GISdata_LTAy_YearlyMonthlyTotals_GlobalSolarAtlas-v2_GEOTIFF/*
 input/05 solar/scaled/*
 input/05 solar/df_solar.csv
+*.tif
+*.shp
+*.xml
+*.sbx
+*.sbn
+*.shx
+*.rds
+*.prj
+*.dbf
+*.cpg
+*.lyr
+*.zip
+*.qpj
+*.hd5
